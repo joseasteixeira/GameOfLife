@@ -9,8 +9,8 @@ int intervalo = 0;
 int generation=0;
 
 // Lê os parâmetros do arquivo de configuração (.txt)
-int ler_configuracoes(const char *nome_arquivo) {
-    FILE *config = fopen(nome_arquivo, "r");
+int ler_configuracoes(const char *arquivo) {
+    FILE *config = fopen(arquivo, "r");
     if (!config) {
         perror("Erro ao abrir arquivo de configuração");
         return 0;

@@ -35,8 +35,8 @@ void init_grid() {
         }
     }
 }
-int load_grid_from_file(const char *filename) {
-    FILE *fp = fopen(filename, "r");
+int load_grid_from_file(const char *estado_inicial) {
+    FILE *fp = fopen(estado_inicial, "r");
     if (!fp) {
         perror("Erro ao abrir arquivo de estado inicial");
         return 0;

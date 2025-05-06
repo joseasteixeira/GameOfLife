@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include "gol.h"
 
-// Salva o estado atual da grade em um arquivo no formato PBM (imagem preto e branco)
+// Salva o estado atual da grade em um arquivo no formato PBM
 void save_pbm(Cell **grid, int height, int width, int iter) {
-    char filename[64];
-    snprintf(filename, sizeof(filename), "gol_%d.pbm", iter);  // Gera nome do arquivo
+    char imagem[64];
+    snprintf(imagem, sizeof(imagem), "gol_%d.pbm", iter);
 
-    FILE *fp = fopen(filename, "w");
+    FILE *fp = fopen(imagem, "w");
     if (!fp) {
-        perror("Erro ao criar arquivo PBM");  // Mensagem de erro se não conseguir criar
+        perror("Erro ao criar arquivo PBM");
         return;
     }
 

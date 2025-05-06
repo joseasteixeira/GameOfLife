@@ -26,5 +26,5 @@ void save_pbm(Cell **grid, int height, int width, int iter);  // Salva a grade e
 
 #endif
 
-int load_grid_from_file(const char *filename);
+int load_grid_from_file(const char *estado_inicial);
 

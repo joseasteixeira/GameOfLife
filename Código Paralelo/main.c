@@ -10,8 +10,8 @@ int intervalo = 0;
 int num_threads = 1;
 
 // Lê os parâmetros do arquivo de configuração (.txt)
-int ler_configuracoes(const char *nome_arquivo) {
-    FILE *config = fopen(nome_arquivo, "r");
+int ler_configuracoes(const char *arquivo) {
+    FILE *config = fopen(arquivo, "r");
     if (!config) {
         perror("Erro ao abrir arquivo de configuração");
         return 0;
@@ -57,7 +57,7 @@ void salvar_tempo_em_arquivo(clock_t inicio, clock_t fim) {
 
 // Função para salvar o tempo em um arquivo
 void salvar_tempo(double tempo_real) {
-    FILE *arquivo = fopen("tempos_parallel.txt", "a");  // Abrir no modo de append
+    FILE *arquivo = fopen("tempos_parallel.txt", "a");
     if (!arquivo) {
         perror("Erro ao abrir o arquivo para salvar o tempo");
         return;
