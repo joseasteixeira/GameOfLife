@@ -5,7 +5,7 @@ EXEC = gol
 TEMPOS = tempos_serial.txt
 
 # Cargas de trabalho (número de iterações)
-CARGAS = 50 500 5000
+CARGAS = 100 1000 10000
 
 # Compilador e flags
 CC = gcc

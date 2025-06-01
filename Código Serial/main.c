@@ -35,25 +35,42 @@ int ler_configuracoes(const char *arquivo) {
 }
 
 // Executa o loop principal do Jogo da Vida
-void executar_simulacao(void) {
+void executar_simulacao(double *tempo_computacao) {
+    clock_t start_total = clock();
+    clock_t tempo_save_total = 0;
+
     for (int i = 0; i < max_iter; i++) {
         if ((i + 1) % intervalo == 0) {
-            save_pbm(grid, HEIGHT, WIDTH, i + 1);
+            clock_t start_save = clock();
+            save_pbm(grid, HEIGHT, WIDTH, i + 1); 
+            clock_t end_save = clock();
+
+            tempo_save_total += (end_save - start_save);
         }
+
         gen_next();
         generation++;
     }
+
+    clock_t end_total = clock();
+
+    // Tempo total - tempo gasto salvando imagens
+    *tempo_computacao = (double)(end_total - start_total - tempo_save_total) / CLOCKS_PER_SEC;
 }
 
+
+
 // Salva um arquivo de texto com o tempo de execução em segundos.
-void salvar_tempo_em_arquivo(clock_t inicio, clock_t fim) {
-    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
+void salvar_tempo_em_arquivo(double tempo_computacao) {
     FILE *fp = fopen("tempos_serial.txt", "a");
     if (fp) {
-        fprintf(fp, "Tempo: %.4f\n", tempo);
+        fprintf(fp, "%.4f\n", tempo_computacao);
         fclose(fp);
+    } else {
+        perror("Erro ao abrir arquivo de tempos");
     }
 }
+
 
 int main(int argc, char *argv[]) {
     // Verifica se o nome do arquivo .txt foi fornecido como argumento
@@ -73,11 +90,10 @@ int main(int argc, char *argv[]) {
     }
     system("clear");
 
-    clock_t start = clock();
-    executar_simulacao();
-    clock_t end = clock();
+    double tempo_computacao = 0.0;
+    executar_simulacao(&tempo_computacao);
+    salvar_tempo_em_arquivo(tempo_computacao);
 
-    salvar_tempo_em_arquivo(start, end);
     
     free_grid();
 

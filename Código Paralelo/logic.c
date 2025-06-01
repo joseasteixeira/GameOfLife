@@ -25,17 +25,15 @@ void gen_next() {
         int block_width = base_block_width + (b < remainder ? 1 : 0);
         int end_col = start_col + block_width;
 
-        // Aplica as regras do jogo apenas nas colunas do bloco
+        // Conta a quantidade de vizinhos vivos.
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = start_col; j < end_col; j++) {
                 int alive_count = 0;
                 for (int k = -1; k <= 1; k++) {
                     for (int l = -1; l <= 1; l++) {
                         if (k == 0 && l == 0) continue;
-
                         int row = (i + k + HEIGHT) % HEIGHT;
                         int col = (j + l + WIDTH) % WIDTH;
-
                         if (grid[row][col].state == ALIVE) {
                             alive_count++;
                         }

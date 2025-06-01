@@ -36,36 +36,41 @@ int ler_configuracoes(const char *arquivo) {
 }
 
 // Executa o loop principal do Jogo da Vida
-void executar_simulacao(void) {
+double executar_simulacao(void) {
+    double tempo_total_inicio = omp_get_wtime();
+    double tempo_save_total = 0.0;
+
     for (int i = 0; i < max_iter; i++) {
         if ((i + 1) % intervalo == 0) {
+            double inicio_save = omp_get_wtime();
             save_pbm(grid, HEIGHT, WIDTH, i + 1);
+            double fim_save = omp_get_wtime();
+
+            tempo_save_total += (fim_save - inicio_save);
         }
+
         gen_next();
     }
+
+    double tempo_total_fim = omp_get_wtime();
+
+    // Retorna tempo total de computação sem contar o tempo de salvar imagem
+    return (tempo_total_fim - tempo_total_inicio - tempo_save_total);
 }
+
+
 
 // Salva um arquivo de texto com o tempo de execução em segundos.
-void salvar_tempo_em_arquivo(clock_t inicio, clock_t fim) {
-    double tempo = (double)(fim - inicio) / CLOCKS_PER_SEC;
-    FILE *fp = fopen("tempos_serial.txt", "a");
-    if (fp) {
-        fprintf(fp, "Tempo: %.4f\n", tempo);
-        fclose(fp);
-    }
-}
-
-// Função para salvar o tempo em um arquivo
-void salvar_tempo(double tempo_real) {
+void salvar_tempo(double tempo) {
     FILE *arquivo = fopen("tempos_parallel.txt", "a");
     if (!arquivo) {
-        perror("Erro ao abrir o arquivo para salvar o tempo");
+        perror("Erro ao abrir o arquivo para salvar tempo da gen_next");
         return;
     }
-    // Salva o tempo real de execução no arquivo
-    fprintf(arquivo, "Tempo real: %.2f \n",tempo_real);
+    fprintf(arquivo, "Tempo gen_next: %.6f\n", tempo);
     fclose(arquivo);
 }
+
 
 int main(int argc, char *argv[]) {
 
@@ -88,12 +93,9 @@ int main(int argc, char *argv[]) {
 
     omp_set_num_threads(num_threads);
 
-    double start_real = omp_get_wtime();
-    executar_simulacao();
-    double end_real = omp_get_wtime();
-    double tempo_real = end_real - start_real;
+    double tempo = executar_simulacao(); 
+    salvar_tempo(tempo);
 
-    salvar_tempo(tempo_real);
     
     free_grid();
 

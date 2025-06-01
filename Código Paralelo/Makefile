@@ -5,10 +5,10 @@ EXEC = gol_parallel
 TEMPOS = tempos_parallel.txt
 
 # Cargas de trabalho (número de iterações)
-CARGAS = 100 1000 10000
+CARGAS = 50 100 500 1000 5000 10000
 
 # Número de threads a serem testados
-THREADS = 1 2 4 6
+THREADS = 4
 
 # Compilador e flags para OpenMP
 CC = gcc
